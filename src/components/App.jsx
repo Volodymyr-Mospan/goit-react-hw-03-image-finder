@@ -17,26 +17,24 @@ export class App extends Component {
   }
 
   handleSearch = ({ query }) => {
-    // console.log(query);
     this.setState({ query });
   };
 
   render() {
     const { images } = this.state;
+
     return (
       <div
         style={{
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: 40,
-          color: '#010101',
+          display: 'grid',
+          gridTemplateColumns: '1fr',
+          gridGap: '16px',
+          paddingBottom: '24px',
         }}
       >
         <Searchbar onSabmit={this.handleSearch} />
 
-        {/* {images.length && <ImageGallery />} */}
+        {!!images.length && <ImageGallery images={images} />}
       </div>
     );
   }

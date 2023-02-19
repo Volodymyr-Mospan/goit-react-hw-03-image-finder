@@ -1,7 +1,13 @@
-export const ImageGalleryItem = (src, alt) => {
+import { React } from 'react';
+import {
+  ImageGalleryItemStld,
+  ImageGalleryImageStld,
+} from 'components/ImageGallery/ImageGallery.styled';
+
+export const ImageGalleryItem = ({ src, alt }) => {
   return (
-    <li class="gallery-item">
-      <img src={src} alt={alt} />
-    </li>
+    <ImageGalleryItemStld>
+      <ImageGalleryImageStld src={src} alt={alt} />
+    </ImageGalleryItemStld>
   );
 };
