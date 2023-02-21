@@ -9,9 +9,11 @@ export const ImageGallery = ({ images }) => {
         {images.map(image => {
           return (
             <ImageGalleryItem
-              src={image.webformatURL}
-              alt={image.tags}
               key={image.id}
+              src={image.webformatURL}
+              srcLarge={image.largeImageURL}
+              alt={image.tags}
+              image={image}
             />
           );
         })}

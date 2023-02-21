@@ -17,5 +17,10 @@ const apiFetch = Object.entries(fetchSeting)
 
 export const addImages = async (querty, page) => {
   const respons = await axios.post(`?q=${querty}&page=${page}&${apiFetch}`);
+
+  if (!respons.data.hits.length) {
+    throw new Error('Nothing found');
+  }
+
   return respons.data;
 };

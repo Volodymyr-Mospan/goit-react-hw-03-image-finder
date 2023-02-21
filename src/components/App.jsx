@@ -2,6 +2,7 @@ import { React, Component } from 'react';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { Button } from 'components/Button/Button';
+import { Loader } from 'components/Loader/Loader';
 import { addImages } from 'services/api';
 
 export class App extends Component {
@@ -10,35 +11,57 @@ export class App extends Component {
     query: '',
     page: 1,
     totalHits: 0,
+    isLoading: false,
+    error: null,
+    status: 'idle',
   };
 
   async componentDidUpdate(prevProps, prevState) {
     if (this.state.query !== prevState.query) {
-      const result = await addImages(this.state.query, 1);
-      this.setState({
-        images: result.hits,
-        page: 1,
-        totalHits: result.totalHits,
-      });
+      this.setState({ images: [], isLoading: true });
+
+      try {
+        const result = await addImages(this.state.query, 1);
+
+        console.log(3);
+        this.setState({
+          images: result.hits,
+          page: 1,
+          totalHits: result.totalHits,
+          isLoading: false,
+          error: null,
+        });
+      } catch (error) {
+        this.setState({
+          images: [],
+          page: 1,
+          totalHits: 0,
+          isLoading: false,
+          error: error,
+        });
+      }
     }
   }
 
   loadMore = async () => {
     const { query, page } = this.state;
+    this.setState({ isLoading: true });
     const result = await addImages(query, page + 1);
     console.log(result);
     this.setState(prevState => ({
       images: [...prevState.images, ...result.hits],
       page: prevState.page + 1,
+      isLoading: false,
     }));
   };
 
-  handleSearch = ({ query }) => {
+  handleSearch = query => {
     this.setState({ query });
   };
 
   render() {
-    const { images, page, totalHits } = this.state;
+    const { images, page, totalHits, isLoading, error } = this.state;
+    const maxPage = Math.ceil(totalHits / 12);
 
     return (
       <div
@@ -51,9 +74,14 @@ export class App extends Component {
       >
         <Searchbar onSabmit={this.handleSearch} />
 
+        {error && <h1>{error.message}</h1>}
+
         {!!images.length && <ImageGallery images={images} />}
-        {!!images.length && page !== Math.ceil(totalHits / 12) && (
-          <Button onClick={this.loadMore} />
+
+        {isLoading && <Loader />}
+
+        {!!images.length && page < maxPage && !isLoading && (
+          <Button onClick={this.loadMore} isLoading={isLoading} />
         )}
       </div>
     );

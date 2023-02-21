@@ -13,8 +13,7 @@ export const Searchbar = ({ onSabmit }) => {
       <Formik
         initialValues={{ query: '' }}
         onSubmit={(values, actions) => {
-          onSabmit(values);
-          actions.resetForm();
+          if (values.query.trim()) onSabmit(values.query.trim());
         }}
       >
         <SearchForm>
