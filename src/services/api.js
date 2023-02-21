@@ -15,7 +15,7 @@ const apiFetch = Object.entries(fetchSeting)
   .map(el => `${el[0]}=${el[1]}`)
   .join('&');
 
-export const addImages = async querty => {
-  const respons = await axios.post(`?q=${querty}&page=1&${apiFetch}`);
+export const addImages = async (querty, page) => {
+  const respons = await axios.post(`?q=${querty}&page=${page}&${apiFetch}`);
   return respons.data;
 };
