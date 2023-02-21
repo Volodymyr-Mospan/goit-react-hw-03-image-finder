@@ -13,7 +13,6 @@ export class App extends Component {
     totalHits: 0,
     isLoading: false,
     error: null,
-    status: 'idle',
   };
 
   async componentDidUpdate(prevProps, prevState) {
