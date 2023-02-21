@@ -10,8 +10,10 @@ export class ImageGalleryItem extends Component {
     isModalOpen: false,
   };
 
-  handleModalTungle = () => {
-    this.setState(prevState => ({ isModalOpen: !prevState.isModalOpen }));
+  handleModalTungle = e => {
+    if (e.code === 'Escape' || e.currentTarget === e.target) {
+      this.setState(prevState => ({ isModalOpen: !prevState.isModalOpen }));
+    }
   };
 
   render() {

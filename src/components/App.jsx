@@ -23,7 +23,6 @@ export class App extends Component {
       try {
         const result = await addImages(this.state.query, 1);
 
-        console.log(3);
         this.setState({
           images: result.hits,
           page: 1,
@@ -47,7 +46,6 @@ export class App extends Component {
     const { query, page } = this.state;
     this.setState({ isLoading: true });
     const result = await addImages(query, page + 1);
-    console.log(result);
     this.setState(prevState => ({
       images: [...prevState.images, ...result.hits],
       page: prevState.page + 1,
@@ -74,7 +72,15 @@ export class App extends Component {
       >
         <Searchbar onSabmit={this.handleSearch} />
 
-        {error && <h1>{error.message}</h1>}
+        {error && !isLoading && (
+          <h1
+            style={{
+              margin: '25px auto',
+            }}
+          >
+            {error.message}
+          </h1>
+        )}
 
         {!!images.length && <ImageGallery images={images} />}
 
